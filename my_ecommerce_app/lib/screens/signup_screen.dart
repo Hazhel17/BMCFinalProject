@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import for auth logic
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import for Firestore
 import 'login_screen.dart'; // Import for navigation (relative path)
 
 class SignUpScreen extends StatefulWidget {
@@ -12,6 +13,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   // Use direct Firebase Auth instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  // Firestore Instance to save user roles
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -33,22 +36,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Firebase command to CREATE a user
-      await _auth.createUserWithEmailAndPassword(
+      // 1. CREATE the user (Authentication) - Capture the UserCredential
+      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      // On successful sign-up, navigate to the Login screen
+      // 2. SAVE THE ROLE TO FIRESTORE (Authorization)
+      if (userCredential.user != null) {
+        // Use the user's UID as the document ID in the 'users' collection
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'email': _emailController.text.trim(),
+          'role': 'user', // The default role for all new users
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      // 3. Navigate to the Login screen
       if (mounted) {
-        // Use pushReplacement to fulfill Module 3 instruction for clean navigation
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       }
 
     } on FirebaseAuthException catch (e) {
-      // Error handling according to Module 4 instructions
+      // Error handling
       String message = 'Registration failed.';
 
       if (e.code == 'weak-password') {
@@ -78,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
 
-    // Ensure loading state is turned off if the widget is still mounted
+    // Ensure loading state is turned off
     if (mounted && _isLoading) {
       setState(() => _isLoading = false);
     }
@@ -88,7 +100,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      // NOTE: Removed AppBar to maintain minimalist design consistency
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
