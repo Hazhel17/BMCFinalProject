@@ -1,28 +1,24 @@
-// lib/providers/cart_provider.dart (UPDATED)
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// Part 1: The CartItem Model (WITH NEW FIELDS)
 class CartItem {
-  final String id; // Unique product ID
+  final String id;
   final String title;
-  final String genre;   // NEW
-  final String format;  // NEW
+  final String genre;
+  final String format;
   final double price;
-  int quantity; // Quantity can change
+  int quantity;
 
   CartItem({
     required this.id,
     required this.title,
     required this.price,
-    required this.genre,  // REQUIRED NEW FIELD
-    required this.format, // REQUIRED NEW FIELD
+    required this.genre,
+    required this.format,
     this.quantity = 1,
   });
 }
 
-// Part 2: The CartProvider Class (The Brain)
 class CartProvider with ChangeNotifier {
   final List<CartItem> _items = [];
 
@@ -64,8 +60,8 @@ class CartProvider with ChangeNotifier {
           id: id,
           title: title,
           price: price,
-          genre: genre,   // PASS NEW FIELD
-          format: format, // PASS NEW FIELD
+          genre: genre,
+          format: format,
         ),
       );
     }

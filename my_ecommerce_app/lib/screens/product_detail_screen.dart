@@ -1,5 +1,3 @@
-// lib/screens/product_detail_screen.dart (UPDATED FOR NEW DESIGN)
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product_model.dart';
@@ -10,7 +8,6 @@ class ProductDetailScreen extends StatelessWidget {
 
   const ProductDetailScreen({super.key, required this.product});
 
-  // Ginawa itong generic card na pwedeng gamitin para sa Price, Format, at Genre.
   Widget _buildFeatureCard(
       BuildContext context,
       IconData icon,
@@ -21,7 +18,6 @@ class ProductDetailScreen extends StatelessWidget {
       ) {
     return Expanded(
       child: Card(
-        // Pwede itong baguhin sa Container o iba pang styling kung gusto
         margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         elevation: 3,
         child: Padding(
@@ -40,7 +36,7 @@ class ProductDetailScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87, // Default color, hindi purple
+                  color: Colors.black87, // Default color
                 ),
               ),
             ],
@@ -55,7 +51,6 @@ class ProductDetailScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final cart = Provider.of<CartProvider>(context, listen: false);
 
-    // Kukunin ang kulay mula sa theme (Hindi babaguhin ang kulay, gagamitin lang ang Theme.primaryColor)
     final cardIconColor = theme.primaryColor;
     final cardLabelColor = Colors.grey[600]!;
 
@@ -91,7 +86,6 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  // Display Genre (tulad ng "Seinen" sa One Punch Man screenshot)
                   Text(
                     product.genre,
                     style: TextStyle(
@@ -102,7 +96,7 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Row for Price, Format (at Rating, kung meron, o Genre ulit)
+                  // Row for Price, Format
                   Row(
                     children: [
                       // 1. Price Card
@@ -125,12 +119,11 @@ class ProductDetailScreen extends StatelessWidget {
                         cardLabelColor,
                       ),
 
-                      // 3. Ginagamit ang Rating card, pero pwede ring ilagay ang Genre dito
                       _buildFeatureCard(
                         context,
                         Icons.star_half_outlined,
-                        'Rating', // Pwede itong palitan ng 'Genre' kung wala kayong rating data
-                        '4.8', // Hardcoded rating for display consistency
+                        'Rating',
+                        '4.8',
                         cardIconColor,
                         cardLabelColor,
                       ),
@@ -141,9 +134,8 @@ class ProductDetailScreen extends StatelessWidget {
                   const Divider(thickness: 1),
                   const SizedBox(height: 16),
 
-                  // Synopsis Title (Description Title)
                   Text(
-                    'Synopsis', // Pinalitan ang 'About this item' ng 'Synopsis'
+                    'Synopsis',
                     style: theme.textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
@@ -155,7 +147,6 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
 
-                  // Add to Cart Button (Bagong styling: Full width at may presyo)
                   ElevatedButton.icon(
                     onPressed: () {
                       cart.addItem(
@@ -174,15 +165,15 @@ class ProductDetailScreen extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.shopping_cart),
-                    // Nagdagdag ng presyo sa label
+
                     label: Text('Add to Cart - ₱${product.price.toStringAsFixed(2)}'),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       textStyle: const TextStyle(fontSize: 18),
-                      // Ginamit ang kulay ng theme
+
                       backgroundColor: theme.primaryColor,
                       foregroundColor: theme.colorScheme.onPrimary,
-                      minimumSize: const Size.fromHeight(50), // Gawing full width
+                      minimumSize: const Size.fromHeight(50),
                     ),
                   ),
                 ],

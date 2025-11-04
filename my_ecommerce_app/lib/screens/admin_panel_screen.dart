@@ -1,5 +1,3 @@
-// lib/screens/admin_panel_screen.dart (UPDATED)
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,7 +17,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   final _priceController = TextEditingController();
   final _imageUrlController = TextEditingController();
 
-  // NEW Controllers for Genre and Format
   final _genreController = TextEditingController();
   final _formatController = TextEditingController();
 
@@ -32,7 +29,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     _descriptionController.dispose();
     _priceController.dispose();
     _imageUrlController.dispose();
-    // Dispose NEW Controllers
     _genreController.dispose();
     _formatController.dispose();
     super.dispose();
@@ -52,7 +48,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
         'price': double.tryParse(_priceController.text.trim()) ?? 0.0,
         'imageUrl': imageUrl,
 
-        // NEW: Include genre and format in the Firestore map
         'genre': _genreController.text.trim(),
         'format': _formatController.text.trim(),
 

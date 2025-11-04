@@ -1,5 +1,3 @@
-// lib/screens/home_screen.dart (FIXED STRUCTURE)
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,10 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchUserRole(); // Dito dapat tawagin ang method
+    _fetchUserRole();
   }
 
-  // 3. HELPER METHODS (Dito dapat nakalagay ang function definitions)
+  // 3. HELPER METHODS
 
   Future<void> _fetchUserRole() async {
     if (_currentUser == null) return;
@@ -62,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Firestore Stream Logic
+
   Stream<QuerySnapshot> _getProductStream() {
     Query query = FirebaseFirestore.instance.collection('products');
 
@@ -111,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Manga & Comics Shop'),
         centerTitle: true,
         actions: [
-          // ... (actions remain the same)
+
           Consumer<CartProvider>(
             builder: (context, cart, child) {
               return Badge(
@@ -142,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
-            onPressed: _signOut, // Tawagin ang _signOut
+            onPressed: _signOut,
           ),
         ],
       ),
@@ -160,9 +158,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: _getProductStream(), // Gamitin ang _getProductStream
+              stream: _getProductStream(),
               builder: (context, snapshot) {
-                // ... (StreamBuilder logic)
+
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }

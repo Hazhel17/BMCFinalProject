@@ -1,13 +1,11 @@
-// lib/models/product_model.dart (UPDATED)
-
 class Product {
   final String id;
   final String name;
   final String description;
   final double price;
   final String imageUrl;
-  final String genre;   // NEW FIELD
-  final String format;  // NEW FIELD
+  final String genre;
+  final String format;
 
   Product({
     required this.id,
@@ -15,8 +13,8 @@ class Product {
     required this.description,
     required this.price,
     required this.imageUrl,
-    required this.genre,   // REQUIRED IN CONSTRUCTOR
-    required this.format,  // REQUIRED IN CONSTRUCTOR
+    required this.genre,
+    required this.format, 
   });
 
   factory Product.fromMap(Map<String, dynamic> data, String id) {
